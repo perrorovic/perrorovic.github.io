@@ -1,0 +1,150 @@
+/* :root{
+  --bg1: #13071a;
+  --bg2: #2b1530;
+  --pink: #ff8fc6;
+  --magenta: #ff55cc;
+  --lavender: #b98cff;
+  --accent: #ffd1ef;
+  --neon: #ff69b4;
+  --muted: rgba(255,255,255,0.6);
+  --glass: rgba(255,255,255,0.04);
+  --glass-2: rgba(255,255,255,0.06);
+} */
+
+:root {
+  --bg1: #13071a;
+  --bg2: #2b1530;
+  --pink: #ff8fc6;
+  --red: #e06c75;
+  --orange: #e5c07b;
+  --green:#98c379;
+  --cyan:#56b6c2;
+  --blue:#61afef;
+  --pink:#ff8fc6;
+  --lavender:#b98cff;
+  --text: rgba(255,255,255,1.0);
+  --muted: rgba(255,255,255,0.5);
+}
+
+.pink {color: var(--pink)}
+.red {color: var(--red)}
+.orange {color: var(--orange)}
+.green {color: var(--green)}
+.cyan {color: var(--cyan)}
+.blue {color: var(--blue)}
+.lavender {color: var(--lavender)}
+.muted {color: var(--muted)}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: "Fira Code", monospace;
+  background: linear-gradient(180deg, var(--bg1), var(--bg2));
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 16px;
+}
+
+html, body {
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar, 
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.wrapper {
+  max-width: 520px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  align-items: center;
+}
+
+.header {
+  font-size: 1.8rem;
+  color: var(--pink);
+  margin-bottom: 8px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.subheader {
+  font-size: 1rem;
+  color: var(--lavender);
+  text-align: center;
+  margin-bottom: 8px;
+  opacity: 0.85;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 18px auto;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.console {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 16px 20px;
+  width: 100%;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  transition: border-color 0.25s ease;
+}
+
+.command {
+  color: var(--pink);
+  font-weight: bold;
+  margin-bottom: 8px;
+  transition: color 0.25s ease;
+}
+
+.console:hover {
+  border-color: var(--pink);
+}
+
+.output {
+  font-family: monospace;
+  line-height: 1.75;
+}
+
+.output a {
+  color: var(--green);
+  text-decoration: none;
+}
+.output a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.blink::after {
+  content: "█";
+  margin-left: 6px;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.post {
+  margin-bottom: 12px;
+}
+
+.post p {
+  margin: 2px 0;
+}
