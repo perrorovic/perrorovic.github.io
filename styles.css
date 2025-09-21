@@ -30,14 +30,14 @@
 body {
   min-height: 100vh;
   font-family: sans-serif;
-  letter-spacing: 0.3px;
+  line-height: 1.6;
   background: linear-gradient(180deg, var(--bg1), var(--bg2));
   color: var(--text);
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 20px 10px;
-  user-select: none;
+  padding: 40px 20px;
+  /* user-select: none; */
 }
 
 html, body {
@@ -52,48 +52,47 @@ body::-webkit-scrollbar {
 }
 
 .wrapper {
-  max-width: 520px;
+  max-width: 960px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  align-items: center;
-  padding: 0 10px;
+  gap: 32px;
+  align-items: flex-start;
+  padding: 0 20px;
 }
 
 .console {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-  padding: 16px 16px;
   width: 100%;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-  transition: border-color 0.25s ease;
-}
-.console:hover {
-  border-color: var(--pink);
 }
 
 .command {
   color: var(--pink);
+  margin-bottom: 6px;
+  font-size: clamp(1rem, 1.2vw, 1.25rem);
   font-weight: bold;
-  margin-bottom: 8px;
-  transition: color 0.25s ease;
-  font-size: clamp(0.75rem, 1.2vw, 1.1rem);
 }
 
 .output {
-  line-height: 1.6;
-  font-size: clamp(0.65rem, 1vw, 1rem);
+  line-height: 1.7;
+  font-size: clamp(0.95rem, 1vw, 1.1rem);
+  margin-bottom: 16px;
 }
 
 .output a {
   color: var(--green);
   text-decoration: none;
+  word-break: break-word;
 }
 .output a:hover {
   text-decoration: underline;
   cursor: pointer;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 24px 0;
+  width: 100%;
 }
 
 .blink::after {
@@ -103,37 +102,21 @@ body::-webkit-scrollbar {
 }
 @keyframes blink { 50% { opacity: 0; } }
 
-.post {
-  margin-bottom: 12px;
-}
-.post p {
-  margin: 2px 0;
-}
-.post-last {
-  margin-bottom: 0;
+.qna p { margin: 4px 0; }
+
+.post { margin-bottom: 14px; }
+.post p { margin: 4px 0; }
+.post-last { margin-bottom: 0; }
+
+@media (max-width: 768px) {
+  .wrapper { max-width: 100%; padding: 0 12px; }
+  .command { font-size: 1rem; }
+  .output { font-size: 0.9rem; }
 }
 
-hr {
-  border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin: 18px auto;
-  width: 100%;
-}
-
-@media (max-width: 400px) {
-  body {
-    padding: 16px 8px;
-  }
-  .console {
-    padding: 12px 12px;
-  }
-}
-
-@keyframes flicker {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {opacity: 1;}
-  20%, 22%, 24%, 55% {opacity: 0.3;}
-}
-
-.glitch {
-  animation: flicker 6s infinite;
+@media (min-width: 1600px) {
+  body { padding: 60px 40px; }
+  .wrapper { max-width: 1200px; gap: 40px; }
+  .command { font-size: 1.4rem; }
+  .output { font-size: 1.2rem; }
 }
