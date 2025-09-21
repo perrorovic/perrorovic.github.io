@@ -1,39 +1,25 @@
-/* :root{
-  --bg1: #13071a;
-  --bg2: #2b1530;
-  --pink: #ff8fc6;
-  --magenta: #ff55cc;
-  --lavender: #b98cff;
-  --accent: #ffd1ef;
-  --neon: #ff69b4;
-  --muted: rgba(255,255,255,0.6);
-  --glass: rgba(255,255,255,0.04);
-  --glass-2: rgba(255,255,255,0.06);
-} */
-
 :root {
   --bg1: #13071a;
   --bg2: #2b1530;
   --pink: #ff8fc6;
   --red: #e06c75;
   --orange: #e5c07b;
-  --green:#98c379;
-  --cyan:#56b6c2;
-  --blue:#61afef;
-  --pink:#ff8fc6;
-  --lavender:#b98cff;
+  --green: #98c379;
+  --cyan: #56b6c2;
+  --blue: #61afef;
+  --lavender: #b98cff;
   --text: rgba(255,255,255,1.0);
   --muted: rgba(255,255,255,0.5);
 }
 
-.pink {color: var(--pink)}
-.red {color: var(--red)}
-.orange {color: var(--orange)}
-.green {color: var(--green)}
-.cyan {color: var(--cyan)}
-.blue {color: var(--blue)}
-.lavender {color: var(--lavender)}
-.muted {color: var(--muted)}
+.pink { color: var(--pink); }
+.red { color: var(--red); }
+.orange { color: var(--orange); }
+.green { color: var(--green); }
+.cyan { color: var(--cyan); }
+.blue { color: var(--blue); }
+.lavender { color: var(--lavender); }
+.muted { color: var(--muted); }
 
 * {
   box-sizing: border-box;
@@ -43,13 +29,15 @@
 
 body {
   min-height: 100vh;
-  font-family: "Fira Code", monospace;
+  font-family: sans-serif;
+  letter-spacing: 0.3px;
   background: linear-gradient(180deg, var(--bg1), var(--bg2));
   color: var(--text);
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 40px 16px;
+  padding: 20px 10px;
+  user-select: none;
 }
 
 html, body {
@@ -68,42 +56,22 @@ body::-webkit-scrollbar {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 24px;
   align-items: center;
-}
-
-.header {
-  font-size: 1.8rem;
-  color: var(--pink);
-  margin-bottom: 8px;
-  text-align: center;
-  letter-spacing: 1px;
-}
-
-.subheader {
-  font-size: 1rem;
-  color: var(--lavender);
-  text-align: center;
-  margin-bottom: 8px;
-  opacity: 0.85;
-}
-
-hr {
-  border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin: 18px auto;
-  margin-top: 20px;
-  width: 100%;
+  padding: 0 10px;
 }
 
 .console {
   background: rgba(255,255,255,0.02);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 10px;
-  padding: 16px 20px;
+  padding: 16px 16px;
   width: 100%;
   box-shadow: 0 8px 24px rgba(0,0,0,0.5);
   transition: border-color 0.25s ease;
+}
+.console:hover {
+  border-color: var(--pink);
 }
 
 .command {
@@ -111,15 +79,12 @@ hr {
   font-weight: bold;
   margin-bottom: 8px;
   transition: color 0.25s ease;
-}
-
-.console:hover {
-  border-color: var(--pink);
+  font-size: clamp(0.75rem, 1.2vw, 1.1rem);
 }
 
 .output {
-  font-family: monospace;
-  line-height: 1.75;
+  line-height: 1.6;
+  font-size: clamp(0.65rem, 1vw, 1rem);
 }
 
 .output a {
@@ -136,15 +101,39 @@ hr {
   margin-left: 6px;
   animation: blink 1s step-end infinite;
 }
-
-@keyframes blink {
-  50% { opacity: 0; }
-}
+@keyframes blink { 50% { opacity: 0; } }
 
 .post {
   margin-bottom: 12px;
 }
-
 .post p {
   margin: 2px 0;
+}
+.post-last {
+  margin-bottom: 0;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 18px auto;
+  width: 100%;
+}
+
+@media (max-width: 400px) {
+  body {
+    padding: 16px 8px;
+  }
+  .console {
+    padding: 12px 12px;
+  }
+}
+
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {opacity: 1;}
+  20%, 22%, 24%, 55% {opacity: 0.3;}
+}
+
+.glitch {
+  animation: flicker 6s infinite;
 }
