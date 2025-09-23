@@ -12,6 +12,7 @@
   --muted: rgba(255,255,255,0.5);
 }
 
+.white { color: var(--text); }
 .pink { color: var(--pink); }
 .red { color: var(--red); }
 .orange { color: var(--orange); }
@@ -105,7 +106,10 @@ hr {
 .qna p { margin: 4px 0; }
 
 .post { margin-bottom: 14px; }
-.post p { margin: 4px 0; }
+.post p { 
+  color: var(--muted);
+  margin: 4px 0; 
+}
 .post-last { margin-bottom: 0; }
 
 @media (max-width: 768px) {
