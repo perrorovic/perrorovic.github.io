@@ -4,64 +4,119 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>perrorovic</title>
+  <meta name="description" content="also known as phierfih, or plovic. small notes against forgetting.">
+  <meta name="author" content="perrorovic">
+  <meta name="theme-color" content="#fdfcf8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111317" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="perrorovic">
+  <meta property="og:description" content="also known as phierfih, or plovic. small notes against forgetting.">
+  <meta property="og:image" content="https://perrorovic.github.io/icon.png">
+  <meta property="og:url" content="https://perrorovic.github.io/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="perrorovic">
+  <meta name="twitter:description" content="also known as phierfih, or plovic. small notes against forgetting.">
+  <meta name="twitter:image" content="https://perrorovic.github.io/icon.png">
   <link rel="icon" type="image/png" href="icon.png">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2">
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("theme");
+        var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var theme = saved || (prefersDark ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
 <main>
 
   <header>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="toggle theme">
+      <span class="theme-icon theme-icon-sun" aria-hidden="true">☀</span>
+      <span class="theme-icon theme-icon-moon" aria-hidden="true">☾</span>
+    </button>
     <h1>perrorovic</h1>
-    <p class="tagline">also known as phierfih, or plovic. pick whichever feels familiar.</p>
+    <p class="tagline">also known as phierfih, or plovic. pick whichever feels familiar to you.</p>
   </header>
 
   <section>
 
     <!-- new entry template:
-    <article>
+    <article id="slug-of-title">
       <p class="date">month day, year</p>
-      <h3>title</h3>
+      <h3><a href="#slug-of-title">title</a></h3>
       <p>body paragraph.</p>
     </article>
     -->
 
-    <article>
+    <article id="given-name">
       <p class="date">may day, 2026</p>
-      <h3>given name</h3>
+      <h3><a href="#given-name">given name</a></h3>
       <p>my first name belong to my grandfather first name, my middle name belong to my older half-brother first name, and my last name belongs to my family name.</p>
       <p>i guess that's why it is called given name as we cannot choose it. as annoying as it is <span class="mark">i carries dead man's name</span> and living under their memories and legacy.</p>
     </article>
 
-    <article>
+    <article id="effect-of-songs">
       <p class="date">unknown date</p>
-      <h3>effect of songs</h3>
+      <h3><a href="#effect-of-songs">effect of songs</a></h3>
       <p><span class="mark">i fucking hate it, is this a curse for me?</span> or am i just unaware of this effect? i cannot listen to paticular songs anymore without ruining myself, fuck this shit.</p>
       <p>those playlist that i painstakingly arrange myself, yeah those won't be played anytime soon, not in weeks, months, years or perhaps never again. it is just too much for me to bear, i hate how music could hold memories.</p>
     </article>
 
-    <article>
-      <p class="date">sept 11, 2026</p>
-      <h3>beneath the abstractions</h3>
+    <article id="beneath-the-abstractions">
+      <p class="date">sept 11, 2025</p>
+      <h3><a href="#beneath-the-abstractions">beneath the abstractions</a></h3>
       <p>the moment that i go into linux and unknowingly adapt the philosophy of it, i always feel i want to know more on how things are being executed since <span class="mark">i feel disconnected from how things actually run since we all being abstracted away from it.</span></p>
       <p>so just out of curiosity i decided to learn vulkan to get better understanding on it and how renderer works, hope i won't suffer and stumble around much, this is the <a href="https://github.com/perrorovic/vulkan-triangle">github repository</a> where i will share my journey on this.</p>
     </article>
 
-    <article>
-      <p class="date">feb 2026</p>
-      <h3>embracing linux</h3>
+    <article id="embracing-linux">
+      <p class="date">feb 2025</p>
+      <h3><a href="#embracing-linux">embracing linux</a></h3>
       <p>win10 is going eol and i cannot upgrade to win11 because my cpu missing required features for it, so instead of upgrading my system as it work perfectly fine for me, i just switched to linux head on, without any proper knowledge. and install archlinux w/ hyprland, on intel cpu and nvidia gpu, so you can imagine how much trouble and shit happen on this occasion.</p>
       <p>the first week is rough, multiple reinstall, broke nearly everything. second week getting there, able to use the system properly and start configure it, <span class="mark">now it's been 214 days on archlinux w/ hyprland</span> on my current system, and i never look back anymore.</p>
     </article>
 
-    <article>
+    <article id="leaving-social-media">
       <p class="date">somewhere in 2025</p>
-      <h3>leaving social media</h3>
+      <h3><a href="#leaving-social-media">leaving social media</a></h3>
       <p>social media is like a life collection gallery imo, where you can share your life moment with others and vice-versa, this is <span class="mark">the reason i never delete anything i post, is because those moment exist and i want it to be remembered.</span> doesn't matter if those are happy, sad or awful memories. what matter is that they exist.</p>
       <p>i dont want to leave, but i have to. so i will just go inactive for the time being, and probably lurking around. i lost interest in social media where it feels less like connection it used to be, and now it is more like noise, platform for conflict, misinformation, brain-dead content and shit that is just a waste of time.</p>
     </article>
 
   </section>
 
+  <footer>
+    <p>nothing in here is for you. <br> i just write so the noise in my head has somewhere else to live.</p>
+  </footer>
+
 </main>
+<script>
+  (function () {
+    var btn = document.getElementById("theme-toggle");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      var current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+      var next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      try { localStorage.setItem("theme", next); } catch (e) {}
+    });
+
+    if (window.matchMedia) {
+      var mq = window.matchMedia("(prefers-color-scheme: dark)");
+      var onChange = function (e) {
+        var hasManualChoice = false;
+        try { hasManualChoice = !!localStorage.getItem("theme"); } catch (err) {}
+        if (hasManualChoice) return;
+        document.documentElement.setAttribute("data-theme", e.matches ? "dark" : "light");
+      };
+      if (mq.addEventListener) mq.addEventListener("change", onChange);
+      else if (mq.addListener) mq.addListener(onChange);
+    }
+  })();
+</script>
 </body>
 </html>
