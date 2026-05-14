@@ -134,6 +134,29 @@ h1 {
   transition: color 400ms ease;
 }
 
+/* ---------- intro ---------- */
+
+.intro {
+  color: var(--dim);
+  font-style: italic;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  text-align: center;
+  margin: 6px 0 0 0;
+  max-width: 28rem;
+  transition: color 400ms ease;
+}
+
+.intro::before {
+  content: "";
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--rule);
+  margin: 4px auto 12px;
+  transition: background-color 400ms ease;
+}
+
 /* ---------- articles ---------- */
 
 section { margin: 0; }
@@ -207,6 +230,25 @@ p:last-child { margin-bottom: 0; }
   color: var(--accent);
   font-style: italic;
   transition: color 400ms ease;
+}
+
+.footnote {
+  color: var(--dim);
+  font-style: italic;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  margin: 6px 0 0 0;
+  transition: color 400ms ease;
+}
+
+.footnote::before {
+  content: "";
+  display: block;
+  width: 25%;
+  height: 1px;
+  background: var(--rule);
+  margin: 0 0 4px 0;
+  transition: background-color 400ms ease;
 }
 
 /* ---------- footer ---------- */
