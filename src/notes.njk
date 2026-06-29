@@ -1,0 +1,16 @@
+---
+layout: base.njk
+title: notes
+permalink: /notes/
+---
+<section class="block">
+  <h1 class="block-title">notes</h1>
+  <ul class="note-list">
+    {% for note in collections.notes %}
+    <li class="note-row h-entry">
+      <a class="p-name u-url" href="{{ note.url }}">{{ note.data.title }}</a>
+      <time class="dt-published note-date" datetime="{{ note.date | isoDate }}">{{ note.data.displayDate or (note.date | displayDate) }}</time>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
