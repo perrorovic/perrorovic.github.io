@@ -1,0 +1,20 @@
+{
+  "name": "perrorovic",
+  "url": "https://perrorovic.github.io",
+  "tagline": "also known as phierfih, or plovic. pick whichever feels familiar to you.",
+  "author": {
+    "name": "perrorovic",
+    "email": "perrorovic@gmail.com",
+    "github": "perrorovic",
+    "linkedin": "https://www.linkedin.com/in/perrorovic/",
+    "discord": "https://discord.com/users/442328321179648010"
+  },
+  "nav": [
+    { "label": "home", "url": "/" },
+    { "label": "notes", "url": "/notes/" }
+  ],
+  "currently": [
+    "maintaining a self-hosted home server",
+    "picking up 3d printing and acrylic painting"
+  ]
+}

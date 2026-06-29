@@ -1,0 +1,30 @@
+---
+layout: base.njk
+title: home
+---
+<section class="bio h-card">
+  <p class="bio-name"><a class="p-name u-url" href="/" rel="me">{{ site.name }}</a></p>
+  <p class="bio-tagline tagline">{{ site.tagline }}</p>
+</section>
+
+<section class="block">
+  <h2 class="block-title">currently</h2>
+  <ul class="currently-list">
+    {% for item in site.currently %}
+    <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="block">
+  <h2 class="block-title">recent notes</h2>
+  <ul class="note-list">
+    {% for note in collections.notes %}{% if loop.index <= 5 %}
+    <li class="note-row h-entry">
+      <a class="p-name u-url" href="{{ note.url }}">{{ note.data.title }}</a>
+      <time class="dt-published note-date" datetime="{{ note.date | isoDate }}">{{ note.data.displayDate or (note.date | displayDate) }}</time>
+    </li>
+    {% endif %}{% endfor %}
+  </ul>
+  <p class="more"><a href="/notes/">see all notes ...</a></p>
+</section>

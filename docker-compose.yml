@@ -5,5 +5,5 @@ services:
     ports:
       - "3000:80"
     volumes:
-      - .:/usr/share/nginx/html:ro
+      - ./_site:/usr/share/nginx/html:ro
     restart: unless-stopped

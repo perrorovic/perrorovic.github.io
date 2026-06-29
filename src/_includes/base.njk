@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if title %}{{ title }} | {{ site.name }}{% else %}{{ site.name }}{% endif %}</title>
+  <meta name="description" content="{{ description or site.tagline }}">
+  <meta name="author" content="{{ site.author.name }}">
+  <meta name="theme-color" content="#fdfcf8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#16120d" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="{% if layout == 'note.njk' %}article{% else %}website{% endif %}">
+  <meta property="og:title" content="{{ title or site.name }}">
+  <meta property="og:description" content="{{ description or site.tagline }}">
+  <meta property="og:image" content="{{ site.url }}/icon.png">
+  <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+  <link rel="icon" type="image/png" href="/icon.png">
+  <style>
+    /* paint correct bg/fg before external stylesheet loads, prevents flash */
+    html { background: #fdfcf8; color: #1a1611; }
+    html[data-theme="dark"] { background: #16120d; color: #fdfcf8; }
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) { background: #16120d; color: #fdfcf8; }
+    }
+  </style>
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("theme");
+        var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var theme = saved || (prefersDark ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="/assets/styles.css?v=12">
+  <link rel="me" href="https://github.com/{{ site.author.github }}">
+  <link rel="me" href="mailto:{{ site.author.email }}">
+</head>
+<body>
+<main>
+
+  <header class="masthead">
+    <div class="mast-row">
+      <a class="mast-name" href="/">{{ site.name }}</a>
+      <nav class="mast-nav" aria-label="primary">
+        {% for item in site.nav %}<a href="{{ item.url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.label }}</a>{% if not loop.last %} <span class="nav-sep">/</span> {% endif %}{% endfor %}
+      </nav>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="toggle theme">
+        <span class="theme-icon theme-icon-sun" aria-hidden="true">☀</span>
+        <span class="theme-icon theme-icon-moon" aria-hidden="true">☾</span>
+      </button>
+    </div>
+  </header>
+
+  {{ content | safe }}
+
+  <footer>
+    <p>you found my quite corner of the web <br> stay as long as you want</p>
+    <p class="footnote-mini">
+      <a rel="me noopener" target="_blank" href="https://github.com/{{ site.author.github }}">github</a>
+      <span class="nav-sep">/</span>
+      <a rel="me noopener" target="_blank" href="{{ site.author.discord }}">discord</a>
+      <span class="nav-sep">/</span>
+      <a rel="me noopener" target="_blank" href="{{ site.author.linkedin }}">linkedin</a>
+      <span class="nav-sep">/</span>
+      <a rel="me" href="mailto:{{ site.author.email }}">email</a>
+    </p>
+  </footer>
+
+</main>
+<script>
+  (function () {
+    document.addEventListener("click", function (e) {
+      var btn = e.target.closest("#theme-toggle");
+      if (!btn) return;
+      document.documentElement.classList.add("theme-animating");
+      var current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+      var next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      try { localStorage.setItem("theme", next); } catch (e) {}
+    });
+    if (window.matchMedia) {
+      var mq = window.matchMedia("(prefers-color-scheme: dark)");
+      var onChange = function (e) {
+        var hasManualChoice = false;
+        try { hasManualChoice = !!localStorage.getItem("theme"); } catch (err) {}
+        if (hasManualChoice) return;
+        document.documentElement.setAttribute("data-theme", e.matches ? "dark" : "light");
+      };
+      if (mq.addEventListener) mq.addEventListener("change", onChange);
+      else if (mq.addListener) mq.addListener(onChange);
+    }
+  })();
+
+  /* in-place page swap. no full reload, no flash.
+     real URLs and real HTML, falls through to normal nav if anything fails. */
+  (function () {
+    var main = document.querySelector("main");
+    if (!main || !window.history || !window.fetch) return;
+
+    function sameOrigin(href) {
+      try {
+        var u = new URL(href, location.href);
+        return u.origin === location.origin && !u.hash.length || u.pathname !== location.pathname;
+      } catch (e) { return false; }
+    }
+
+    function swap(url, push) {
+      fetch(url, { headers: { "Accept": "text/html" } })
+        .then(function (r) { if (!r.ok) throw 0; return r.text(); })
+        .then(function (html) {
+          var doc = new DOMParser().parseFromString(html, "text/html");
+          var nextMain = doc.querySelector("main");
+          if (!nextMain) { location.href = url; return; }
+          main.replaceWith(nextMain);
+          main = nextMain;
+          document.title = doc.title;
+          var ariaLinks = document.querySelectorAll(".mast-nav a");
+          ariaLinks.forEach(function (a) { a.removeAttribute("aria-current"); });
+          var path = new URL(url, location.href).pathname;
+          ariaLinks.forEach(function (a) {
+            if (a.getAttribute("href") === path) a.setAttribute("aria-current", "page");
+          });
+          if (push) history.pushState({ url: url }, "", url);
+          window.scrollTo(0, 0);
+        })
+        .catch(function () { location.href = url; });
+    }
+
+    document.addEventListener("click", function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest("a");
+      if (!a) return;
+      var href = a.getAttribute("href");
+      if (!href || a.target === "_blank" || a.hasAttribute("download")) return;
+      var url = new URL(href, location.href);
+      if (url.origin !== location.origin) return;
+      if (url.pathname === location.pathname && url.hash) return;
+      e.preventDefault();
+      swap(url.pathname + url.search, true);
+    });
+
+    window.addEventListener("popstate", function () {
+      swap(location.pathname + location.search, false);
+    });
+  })();
+</script>
+</body>
+</html>
