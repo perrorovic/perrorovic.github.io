@@ -21,11 +21,11 @@
 }
 
 :root[data-theme="dark"] {
-  --bg:      #16120d;
-  --fg:      #fdfcf8;
-  --dim:     #a39a87;
-  --rule:    #3a342a;
-  --accent:  #e58a6b;
+  --bg:      #141416;
+  --fg:      #ededf0;
+  --dim:     #8a8a90;
+  --rule:    #2c2c31;
+  --accent:  #d98a6f;
 }
 
 * { box-sizing: border-box; }
