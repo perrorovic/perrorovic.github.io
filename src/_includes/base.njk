@@ -7,7 +7,7 @@
   <meta name="description" content="{{ description or site.tagline }}">
   <meta name="author" content="{{ site.author.name }}">
   <meta name="theme-color" content="#fdfcf8" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#141416" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#16120d" media="(prefers-color-scheme: dark)">
   <meta property="og:type" content="{% if layout == 'note.njk' %}article{% else %}website{% endif %}">
   <meta property="og:title" content="{{ title or site.name }}">
   <meta property="og:description" content="{{ description or site.tagline }}">
@@ -17,9 +17,9 @@
   <style>
     /* paint correct bg/fg before external stylesheet loads, prevents flash */
     html { background: #fdfcf8; color: #1a1611; }
-    html[data-theme="dark"] { background: #141416; color: #ededf0; }
+    html[data-theme="dark"] { background: #16120d; color: #fdfcf8; }
     @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) { background: #141416; color: #ededf0; }
+      html:not([data-theme="light"]) { background: #16120d; color: #fdfcf8; }
     }
   </style>
   <script>
@@ -55,7 +55,7 @@
   {{ content | safe }}
 
   <footer>
-    <p>you found my quite corner of the web <br> stay as long as you want</p>
+    <p>no cookies, no pop-ups, no ads</br>how i miss the old internet</p>
     <p class="footnote-mini">
       <a rel="me noopener" target="_blank" href="https://github.com/{{ site.author.github }}">github</a>
       <span class="nav-sep">/</span>

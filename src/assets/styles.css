@@ -20,12 +20,14 @@
           Georgia, "Times New Roman", serif;
 }
 
+/* dark = warm tonal mirror of the light theme:
+   bg/fg inverted, same warm hue family, accent lightened for contrast */
 :root[data-theme="dark"] {
-  --bg:      #141416;
-  --fg:      #ededf0;
-  --dim:     #8a8a90;
-  --rule:    #2c2c31;
-  --accent:  #d98a6f;
+  --bg:      #16120d;
+  --fg:      #fdfcf8;
+  --dim:     #a39a87;
+  --rule:    #3a342a;
+  --accent:  #dba28f;
 }
 
 * { box-sizing: border-box; }
