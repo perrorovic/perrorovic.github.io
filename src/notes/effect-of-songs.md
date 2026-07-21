@@ -2,7 +2,6 @@
 title: effect of songs
 date: 2025-01-01
 displayDate: unknown date
-order: 4
 ---
 
 <span class="mark">i fucking hate it, is this a curse for me?</span> or am i just unaware of this effect? i cannot listen to paticular songs anymore without ruining myself, fuck this shit.

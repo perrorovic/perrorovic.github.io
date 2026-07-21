@@ -2,29 +2,53 @@
 layout: base.njk
 title: home
 ---
-<section class="bio h-card">
-  <p class="bio-name"><a class="p-name u-url" href="/" rel="me">{{ site.name }}</a></p>
-  <p class="bio-tagline tagline">{{ site.tagline }}</p>
-</section>
+<div class="home-grid">
+  <div class="home-main">
+    <section class="bio h-card">
+      <p class="bio-name"><a class="p-name u-url" href="/" rel="me">{{ site.name }}</a></p>
+      <p class="bio-tagline tagline">{{ site.tagline }}</p>
+    </section>
 
-<section class="block">
-  <h2 class="block-title">currently</h2>
-  <ul class="currently-list">
-    {% for item in site.currently %}
-    <li>{{ item }}</li>
-    {% endfor %}
-  </ul>
-</section>
+    <section class="block">
+      <h2 class="block-title">currently</h2>
+      <ul class="currently-list">
+        {% for item in site.currently %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </section>
 
-<section class="block">
-  <h2 class="block-title">recent notes</h2>
-  <ul class="note-list">
-    {% for note in collections.notes %}{% if loop.index <= 5 %}
-    <li class="note-row h-entry">
-      <a class="p-name u-url" href="{{ note.url }}">{{ note.data.title }}</a>
-      <time class="dt-published note-date" datetime="{{ note.date | isoDate }}">{{ note.data.displayDate or (note.date | displayDate) }}</time>
-    </li>
-    {% endif %}{% endfor %}
-  </ul>
-  <p class="more"><a href="/notes/">see all notes ...</a></p>
-</section>
+    <section class="block">
+      <h2 class="block-title">Unchronological notes</h2>
+      <ul class="note-list scroll-list">
+        {% for note in collections.notes %}
+        <li class="note-row h-entry">
+          <a class="p-name u-url" href="{{ note.url }}">{{ note.data.title }}</a>
+          <time class="dt-published note-date" datetime="{{ note.date | isoDate }}">{{ note.data.displayDate or (note.date | displayDate) }}</time>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </div>
+
+  {% if music and music.length %}
+  <aside class="home-side" aria-label="music">
+    <section class="block">
+      <h2 class="block-title">archived songs</h2>
+      <ul class="music-list scroll-list">
+        {% for track in music %}
+        <li class="music-row">
+          <a class="music-link" href="{{ track.url }}" target="_blank" rel="noopener">
+            {% if track.cover %}<img class="music-cover" src="{{ track.cover }}" alt="" loading="lazy" width="48" height="48">{% endif %}
+            <span class="music-meta">
+              <span class="music-title">{{ track.title }}</span>
+              <span class="music-artist">{{ track.artist }}</span>
+            </span>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </aside>
+  {% endif %}
+</div>

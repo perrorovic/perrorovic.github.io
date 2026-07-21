@@ -2,7 +2,6 @@
 title: be the dumbest
 date: 2026-03-01
 displayDate: march 2026
-order: 1
 ---
 
 do you know that being the dumbest person in a room means you can basically learn from everybody in there?

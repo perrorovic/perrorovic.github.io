@@ -2,7 +2,6 @@
 title: leaving social media
 date: 2025-06-01
 displayDate: somewhere in 2025
-order: 7
 ---
 
 social media is like a life collection gallery imo, where you can share your life moment with others and vice-versa, this is <span class="mark">the reason i never delete anything i post, is because those moment exist and i want it to be remembered.</span> doesn't matter if those are happy, sad or awful memories. what matter is that they exist.

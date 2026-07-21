@@ -2,7 +2,6 @@
 title: beneath the abstractions
 date: 2025-09-11
 displayDate: sept 11, 2025
-order: 5
 ---
 
 the moment that i go into linux and unknowingly adapt the philosophy of it, i always feel i want to know more on how things are being executed since <span class="mark">i feel disconnected from how things actually run since we all being abstracted away from it.</span>

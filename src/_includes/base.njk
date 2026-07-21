@@ -6,8 +6,9 @@
   <title>{% if title %}{{ title }} | {{ site.name }}{% else %}{{ site.name }}{% endif %}</title>
   <meta name="description" content="{{ description or site.tagline }}">
   <meta name="author" content="{{ site.author.name }}">
-  <meta name="theme-color" content="#fdfcf8" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#16120d" media="(prefers-color-scheme: dark)">
+  <!-- light is the forced default, so no prefers-color-scheme variants here.
+       the toggle script rewrites this to #1b1b1b when dark is chosen. -->
+  <meta name="theme-color" id="theme-color" content="#fdfcf8">
   <meta property="og:type" content="{% if layout == 'note.njk' %}article{% else %}website{% endif %}">
   <meta property="og:title" content="{{ title or site.name }}">
   <meta property="og:description" content="{{ description or site.tagline }}">
@@ -15,36 +16,34 @@
   <meta property="og:url" content="{{ site.url }}{{ page.url }}">
   <link rel="icon" type="image/png" href="/icon.png">
   <style>
-    /* paint correct bg/fg before external stylesheet loads, prevents flash */
+    /* paint correct bg/fg before external stylesheet loads, prevents flash.
+       light is the default for everyone — the device's colour scheme is
+       deliberately not consulted, so there is no prefers-color-scheme rule. */
     html { background: #fdfcf8; color: #1a1611; }
-    html[data-theme="dark"] { background: #16120d; color: #fdfcf8; }
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) { background: #16120d; color: #fdfcf8; }
-    }
+    html[data-theme="dark"] { background: #1b1b1b; color: #e2e2e2; }
   </style>
   <script>
     (function () {
       try {
+        /* light unless this visitor has explicitly toggled to dark before.
+           the device's own colour scheme is intentionally ignored. */
         var saved = localStorage.getItem("theme");
-        var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-        var theme = saved || (prefersDark ? "dark" : "light");
-        document.documentElement.setAttribute("data-theme", theme);
-      } catch (e) {}
+        document.documentElement.setAttribute("data-theme", saved === "dark" ? "dark" : "light");
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
     })();
   </script>
-  <link rel="stylesheet" href="/assets/styles.css?v=12">
+  <link rel="stylesheet" href="/assets/styles.css?v=31">
   <link rel="me" href="https://github.com/{{ site.author.github }}">
   <link rel="me" href="mailto:{{ site.author.email }}">
 </head>
 <body>
-<main>
+<div class="shell">
 
   <header class="masthead">
-    <div class="mast-row">
-      <a class="mast-name" href="/">{{ site.name }}</a>
-      <nav class="mast-nav" aria-label="primary">
-        {% for item in site.nav %}<a href="{{ item.url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.label }}</a>{% if not loop.last %} <span class="nav-sep">/</span> {% endif %}{% endfor %}
-      </nav>
+    <div class="shell-row mast-row">
+      <a class="mast-name" href="/">{{ site.server }}</a>
       <button id="theme-toggle" class="theme-toggle" type="button" aria-label="toggle theme">
         <span class="theme-icon theme-icon-sun" aria-hidden="true">☀</span>
         <span class="theme-icon theme-icon-moon" aria-hidden="true">☾</span>
@@ -52,24 +51,50 @@
     </div>
   </header>
 
-  {{ content | safe }}
+  <div class="page">
+    <main>
+      {{ content | safe }}
+    </main>
+  </div>
 
   <footer>
-    <p>no cookies, no pop-ups, no ads</br>how i miss the old internet</p>
-    <p class="footnote-mini">
-      <a rel="me noopener" target="_blank" href="https://github.com/{{ site.author.github }}">github</a>
-      <span class="nav-sep">/</span>
-      <a rel="me noopener" target="_blank" href="{{ site.author.discord }}">discord</a>
-      <span class="nav-sep">/</span>
-      <a rel="me noopener" target="_blank" href="{{ site.author.linkedin }}">linkedin</a>
-      <span class="nav-sep">/</span>
-      <a rel="me" href="mailto:{{ site.author.email }}">email</a>
-    </p>
+    <div class="shell-row foot-row">
+      <p class="foot-line">no cookies, no pop-ups, no ads <span class="nav-sep">-</span> how i miss the old internet</p>
+      <p class="footnote-mini">
+        <a rel="me noopener" target="_blank" href="https://github.com/{{ site.author.github }}">github</a>
+        <span class="nav-sep">/</span>
+        <a rel="me noopener" target="_blank" href="{{ site.author.discord }}">discord</a>
+        <span class="nav-sep">/</span>
+        <a rel="me noopener" target="_blank" href="{{ site.author.steam }}">steam</a>
+        <span class="nav-sep">/</span>
+        <a rel="me noopener" target="_blank" href="{{ site.author.linkedin }}">linkedin</a>
+        <span class="nav-sep">/</span>
+        <a rel="me" href="mailto:{{ site.author.email }}">email</a>
+      </p>
+    </div>
   </footer>
 
-</main>
+</div>
+
+<div class="modal" id="note-modal" hidden>
+  <div class="modal-backdrop" data-modal-close></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-heading" tabindex="-1">
+    <header class="modal-head">
+      <h1 class="p-name" id="modal-heading"></h1>
+      <p class="date" id="modal-date"></p>
+      <button class="modal-close" type="button" data-modal-close aria-label="close note">✕</button>
+    </header>
+    <div class="modal-body e-content" id="modal-body"></div>
+    <footer class="modal-foot" id="modal-foot" hidden></footer>
+  </div>
+</div>
+
 <script>
+  /* the toggle is the ONLY way the theme changes. no matchMedia listener:
+     the device switching to dark at sunset must not move this site. */
   (function () {
+    var meta = document.getElementById("theme-color");
+
     document.addEventListener("click", function (e) {
       var btn = e.target.closest("#theme-toggle");
       if (!btn) return;
@@ -77,71 +102,164 @@
       var current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
       var next = current === "dark" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", next);
+      if (meta) meta.setAttribute("content", next === "dark" ? "#1b1b1b" : "#fdfcf8");
       try { localStorage.setItem("theme", next); } catch (e) {}
     });
-    if (window.matchMedia) {
-      var mq = window.matchMedia("(prefers-color-scheme: dark)");
-      var onChange = function (e) {
-        var hasManualChoice = false;
-        try { hasManualChoice = !!localStorage.getItem("theme"); } catch (err) {}
-        if (hasManualChoice) return;
-        document.documentElement.setAttribute("data-theme", e.matches ? "dark" : "light");
-      };
-      if (mq.addEventListener) mq.addEventListener("change", onChange);
-      else if (mq.addListener) mq.addListener(onChange);
-    }
   })();
 
-  /* in-place page swap. no full reload, no flash.
-     real URLs and real HTML, falls through to normal nav if anything fails. */
+  /* publish the real header+footer height as --chrome so the scrolling
+     column can size itself against the space between them, not the viewport
+     (vh units ignore the fixed chrome and run the music list under the footer). */
   (function () {
-    var main = document.querySelector("main");
-    if (!main || !window.history || !window.fetch) return;
+    var header = document.querySelector(".masthead");
+    var footer = document.querySelector("footer");
+    if (!header || !footer) return;
 
-    function sameOrigin(href) {
-      try {
-        var u = new URL(href, location.href);
-        return u.origin === location.origin && !u.hash.length || u.pathname !== location.pathname;
-      } catch (e) { return false; }
+    function measure() {
+      var h = header.offsetHeight + footer.offsetHeight;
+      document.documentElement.style.setProperty("--chrome", h + "px");
     }
 
-    function swap(url, push) {
+    measure();
+    if (window.ResizeObserver) {
+      var ro = new ResizeObserver(measure);
+      ro.observe(header);
+      ro.observe(footer);
+    } else {
+      window.addEventListener("resize", measure);
+    }
+    /* webfont swap changes the chrome height after first paint */
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  })();
+
+  /* notes open in a popup over the current page instead of navigating.
+     real URLs are kept (pushState + direct visits still render the full page),
+     so nothing here is load-bearing for the content actually existing. */
+  (function () {
+    var modal = document.getElementById("note-modal");
+    var body = document.getElementById("modal-body");
+    var panel = modal && modal.querySelector(".modal-panel");
+    var heading = document.getElementById("modal-heading");
+    var dateEl = document.getElementById("modal-date");
+    var foot = document.getElementById("modal-foot");
+    if (!modal || !body || !panel || !heading || !dateEl || !foot) return;
+    if (!window.history || !window.fetch) return;
+
+    var homeTitle = document.title;
+    var lastFocus = null;
+    var open = false;
+    var pushed = 0;  /* history entries this popup added, to be rewound on close */
+
+    function isNoteUrl(pathname) {
+      return /^\/notes\/[^/]+\/$/.test(pathname);
+    }
+
+    /* landed straight on a note's own URL (shared link, bookmark, no-JS crawler):
+       that page IS the note, so leave every link alone and navigate normally.
+       popping a modal on top of a note would leave the URL lying about the content. */
+    if (isNoteUrl(location.pathname)) return;
+
+    /* the note's own page is one article; the popup splits it into a pinned
+       head, the scrolling paper, and a pinned foot — so title and date stay
+       visible no matter how far down a long note you are. */
+    function show(article, title, url, push) {
+      var h1 = article.querySelector("h1");
+      var date = article.querySelector(".date");
+      var content = article.querySelector(".e-content");
+
+      heading.textContent = h1 ? h1.textContent : title;
+      dateEl.innerHTML = date ? date.innerHTML : "";
+      body.innerHTML = content ? content.innerHTML : "";
+
+      /* the footnote comes from the note's frontmatter and renders outside
+         .e-content, so it is never part of the paper — the popup just moves it
+         into the footer bar. no footnote, no bar at all. */
+      var aside = article.querySelector(".footnote");
+      foot.innerHTML = aside ? aside.innerHTML : "";
+      foot.hidden = !aside;
+
+      modal.hidden = false;
+      document.documentElement.classList.add("modal-open");
+      if (!open) lastFocus = document.activeElement;
+      open = true;
+      body.scrollTop = 0;
+      panel.focus();
+      document.title = title;
+      if (push) { history.pushState({ note: url }, "", url); pushed++; }
+    }
+
+    function teardown() {
+      open = false;
+      modal.hidden = true;
+      document.documentElement.classList.remove("modal-open");
+      body.innerHTML = "";
+      heading.textContent = "";
+      dateEl.innerHTML = "";
+      foot.innerHTML = "";
+      foot.hidden = true;
+      document.title = homeTitle;
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+      lastFocus = null;
+    }
+
+    /* closing REWINDS history instead of pushing a new entry.
+       pushing on close was the bug: every open/close left a home→note→home
+       pair on the stack, so back from the home page walked you through every
+       note you had peeked at instead of leaving the site.
+       now open pushes one entry and close consumes exactly the entries we
+       pushed, leaving the stack as if the popup never happened. */
+    function close(fromPop) {
+      if (!open) return;
+      var steps = pushed;
+      pushed = 0;
+      teardown();
+      /* the browser's own back button got us here — history already moved */
+      if (fromPop) return;
+      history.go(-(steps || 1));
+    }
+
+    function load(url, push) {
       fetch(url, { headers: { "Accept": "text/html" } })
         .then(function (r) { if (!r.ok) throw 0; return r.text(); })
         .then(function (html) {
           var doc = new DOMParser().parseFromString(html, "text/html");
-          var nextMain = doc.querySelector("main");
-          if (!nextMain) { location.href = url; return; }
-          main.replaceWith(nextMain);
-          main = nextMain;
-          document.title = doc.title;
-          var ariaLinks = document.querySelectorAll(".mast-nav a");
-          ariaLinks.forEach(function (a) { a.removeAttribute("aria-current"); });
-          var path = new URL(url, location.href).pathname;
-          ariaLinks.forEach(function (a) {
-            if (a.getAttribute("href") === path) a.setAttribute("aria-current", "page");
-          });
-          if (push) history.pushState({ url: url }, "", url);
-          window.scrollTo(0, 0);
+          var article = doc.querySelector(".note-full");
+          if (!article) { location.href = url; return; }
+          show(article, doc.title, url, push);
         })
         .catch(function () { location.href = url; });
     }
 
     document.addEventListener("click", function (e) {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+      if (e.target.closest("[data-modal-close]")) { e.preventDefault(); close(false); return; }
+
       var a = e.target.closest("a");
       if (!a) return;
       var href = a.getAttribute("href");
       if (!href || a.target === "_blank" || a.hasAttribute("download")) return;
-      var url = new URL(href, location.href);
-      if (url.origin !== location.origin) return;
-      if (url.pathname === location.pathname && url.hash) return;
+      var url;
+      try { url = new URL(href, location.href); } catch (err) { return; }
+      if (url.origin !== location.origin || !isNoteUrl(url.pathname)) return;
       e.preventDefault();
-      swap(url.pathname + url.search, true);
+      load(url.pathname, true);
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && open) close(false);
     });
 
     window.addEventListener("popstate", function () {
-      swap(location.pathname + location.search, false);
+      var url = location.pathname;
+      if (isNoteUrl(url)) {
+        /* stepped onto a note entry (forward, or back from one note to an
+           earlier one). that entry is no longer ours to rewind. */
+        if (pushed > 0) pushed--;
+        load(url, false);
+      } else {
+        close(true);
+      }
     });
   })();
 </script>

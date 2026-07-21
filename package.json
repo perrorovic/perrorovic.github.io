@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "rm -rf _site && eleventy && (docker compose restart website 2>/dev/null || true)",
+    "music": "node scripts/fetch-music.js",
+    "build": "rm -rf _site && npm run music && eleventy && (docker compose restart website 2>/dev/null || true)",
     "serve": "eleventy --serve --port=3000",
     "clean": "rm -rf _site"
   },

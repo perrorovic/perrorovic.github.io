@@ -2,12 +2,17 @@
 layout: base.njk
 ---
 <article class="h-entry note-full">
-  <p class="date"><time class="dt-published" datetime="{{ page.date | isoDate }}">{{ page.date | displayDate }}</time></p>
-  <h1 class="p-name">{{ title }}</h1>
+  <header class="note-head">
+    <h1 class="p-name">{{ title }}</h1>
+    <p class="date"><time class="dt-published" datetime="{{ page.date | isoDate }}">{{ displayDate or (page.date | displayDate) }}</time></p>
+  </header>
   <div class="e-content">
     {{ content | safe }}
   </div>
-  <p class="back"><a href="/notes/">... back to all notes</a></p>
+  {% if footnote %}
+  <p class="footnote">{{ footnote | nl2br | safe }}</p>
+  {% endif %}
+  <p class="back"><a href="/">... back home</a></p>
   <a class="u-url" href="{{ site.url }}{{ page.url }}" hidden></a>
   <a class="p-author h-card" href="{{ site.url }}" hidden>{{ site.author.name }}</a>
 </article>
